@@ -1765,6 +1765,8 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+var _this2 = undefined;
+
 //
 //
 //
@@ -1829,22 +1831,27 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       drawer: false,
-      status: localStorage.getItem('loc_in')
+      status: false
     };
   },
   methods: {
     Logout: function Logout() {
-      localStorage.setItem('api_token', null);
-      localStorage.setItem('log_in', 'false');
-      this.status = false;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/logoutnow', {}).then(function (res) {})["catch"](function (res) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/logoutnow', {}).then(function (res) {
+        localStorage.setItem('api_token', null);
+        localStorage.setItem('log_in', 'false');
+
+        _this.$router.push('cp');
+      })["catch"](function (res) {
         console.log(res);
       });
-      this.$router.push('cp');
     }
   },
   computed: {
-    InStorage: function InStorage() {}
+    InStorage: function InStorage() {
+      _this2.status = localStorage.getItem('log_in');
+    }
   },
   updated: function updated() {
     this.status = localStorage.getItem('log_in');
@@ -1979,9 +1986,12 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = true;
     },
     sendFormCup: function sendFormCup() {
+      var _this2 = this;
+
       console.log(this.FormCups);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/cashback', this.FormCups).then(function (res) {
         console.log(res.data);
+        _this2.dialog = false;
       })["catch"](function (res) {
         console.log(res.data);
       });

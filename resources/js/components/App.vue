@@ -62,31 +62,30 @@
         name: "App",
         data: () => ({
             drawer: false,
-            status :localStorage.getItem('loc_in'),
+            status : false,
         }),
         methods:{
             Logout(){
-
-                localStorage.setItem('api_token',null)
-                localStorage.setItem('log_in','false')
-                this.status = false
                 axios.post('/api/logoutnow',{}).then(res=>{
+                    localStorage.setItem('api_token',null)
+                    localStorage.setItem('log_in','false')
+                    this.$router.push('cp')
 
                 }).catch(res=>{
                     console.log(res)
                 })
-                this.$router.push('cp')
 
             }
         },
         computed: {
            InStorage:()=>{
-
+               this.status  = localStorage.getItem('log_in')
            }
         },
         updated(){
            this.status  = localStorage.getItem('log_in')
         },
+
         props: {
             source: String
         }

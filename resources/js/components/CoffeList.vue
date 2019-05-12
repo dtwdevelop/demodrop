@@ -116,6 +116,7 @@
                     this.FormCups,
                 ).then(res=>{
                     console.log(res.data)
+                    this.dialog =false
                 }).catch(res=>{
                     console.log(res.data)
                 })
