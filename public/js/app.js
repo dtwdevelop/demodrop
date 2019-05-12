@@ -3388,7 +3388,7 @@ var render = function() {
                           _c(
                             "v-list-tile-title",
                             [
-                              _c("router-link", { attrs: { to: "/" } }, [
+                              _c("router-link", { attrs: { to: "/list" } }, [
                                 _vm._v("Near Coffee Drop")
                               ])
                             ],
