@@ -124,12 +124,13 @@
                 this.dialog = false
             }
         },
-        created() {
+        beforeCreate() {
+            if(localStorage.getItem('api_token') == null) {
+                this.$router.push('cp')
+            }
 
         },
-        BeforeCreate() {
 
-        }
     }
 </script>
 

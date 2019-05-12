@@ -12,19 +12,28 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/add', function () {
-    return view('welcome');
-});
-Route::get('/list', function () {
-    return view('welcome');
-});
-Route::resource('location','Location');
 
-Route::get('/cashback','Location@getcup');
-Route::post('/cashback','Location@getcash');
+    return view('welcome');
 
-Auth::routes();
+});
+Route::get('/cp', function () {
 
-Route::get('/home', 'HomeController@index')->name('home');
+    return view('welcome');
+
+});
+
+    Route::get('/add', function () {
+        return view('welcome');
+    });
+    Route::get('/list', function () {
+        return view('welcome');
+    });
+    Route::resource('location', 'Location');
+
+    Route::get('/cashback', 'Location@getcup');
+    Route::post('/cashback', 'Location@getcash');
+
+    Auth::routes();
+
+    Route::get('/home', 'HomeController@index')->name('home');
+

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 class UserTableSeeder extends Seeder
 {
     /**
@@ -15,6 +16,7 @@ class UserTableSeeder extends Seeder
             'name' => 'test',
             'email' => 'test@email.com',
             'password' => bcrypt('demo'),
+            'api_token' => Str::random(60),
         ]);
     }
 }

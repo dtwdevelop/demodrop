@@ -7,6 +7,7 @@ use Symfony\Component\Console\Helper\Table;
 use\App;
 use RFHaversini\Distance;
 
+
 class Location extends Controller
 {
     /**
@@ -14,6 +15,13 @@ class Location extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        //$this->middleware('auth:api')->only('store','getcash');
+
+
+    }
+
     public function index()
     {
         return DB::table('location')->get();

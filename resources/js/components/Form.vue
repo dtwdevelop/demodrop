@@ -102,7 +102,13 @@
                     console.log(res)
                 })
             }
+        },
+        beforeCreate() {
+            if (localStorage.getItem('api_token') == null) {
+                this.$router.push('cp')
+            }
         }
+
     }
 </script>
 

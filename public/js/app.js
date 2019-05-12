@@ -1763,6 +1763,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1812,12 +1814,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
   data: function data() {
     return {
-      drawer: false
+      drawer: false,
+      status: localStorage.getItem('loc_in')
     };
+  },
+  methods: {
+    Logout: function Logout() {
+      localStorage.setItem('api_token', null);
+      localStorage.setItem('log_in', 'false');
+      this.status = false;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/logoutnow', {}).then(function (res) {})["catch"](function (res) {
+        console.log(res);
+      });
+      this.$router.push('cp');
+    }
+  },
+  computed: {
+    InStorage: function InStorage() {}
+  },
+  updated: function updated() {
+    this.status = localStorage.getItem('log_in');
   },
   props: {
     source: String
@@ -1960,8 +1990,11 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = false;
     }
   },
-  created: function created() {},
-  BeforeCreate: function BeforeCreate() {}
+  beforeCreate: function beforeCreate() {
+    if (localStorage.getItem('api_token') == null) {
+      this.$router.push('cp');
+    }
+  }
 });
 
 /***/ }),
@@ -2081,6 +2114,11 @@ __webpack_require__.r(__webpack_exports__);
         console.log(res);
       });
     }
+  },
+  beforeCreate: function beforeCreate() {
+    if (localStorage.getItem('api_token') == null) {
+      this.$router.push('cp');
+    }
   }
 });
 
@@ -2095,6 +2133,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2118,12 +2158,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Login",
   data: function data() {
     return {
-      drawer: null
+      drawer: null,
+      snackbar: false,
+      timeout: 6000,
+      text: '',
+      user: {
+        email: '',
+        password: ''
+      }
     };
+  },
+  methods: {
+    Login: function Login() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/login', this.user).then(function (res) {
+        if (res.data.api_token != null) {
+          localStorage.setItem('api_token', res.data.api_token);
+          localStorage.setItem('log_in', 'true');
+
+          _this.$router.push('list');
+        } else {
+          if (res.data.error == true) {
+            _this.snackbar = true;
+            _this.text = " Login Failed";
+          }
+        }
+      })["catch"](function (res) {
+        console.log(res.data);
+      });
+    }
+  },
+  created: function created() {
+    console.log(localStorage.getItem('api_token'));
   },
   props: {
     source: String
@@ -3283,59 +3361,103 @@ var render = function() {
             "v-list",
             { attrs: { dense: "" } },
             [
-              _c(
-                "v-list-tile",
-                { on: { click: function($event) {} } },
-                [
-                  _c(
-                    "v-list-tile-action",
-                    [_c("v-icon", [_vm._v("place")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-tile-content",
+              _vm.status
+                ? _c(
+                    "v-list-tile",
+                    { on: { click: function($event) {} } },
                     [
                       _c(
-                        "v-list-tile-title",
+                        "v-list-tile-action",
+                        [_c("v-icon", [_vm._v("place")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-tile-content",
                         [
-                          _c("router-link", { attrs: { to: "/" } }, [
-                            _vm._v("Near Coffee Drop")
-                          ])
+                          _c(
+                            "v-list-tile-title",
+                            [
+                              _c("router-link", { attrs: { to: "/" } }, [
+                                _vm._v("Near Coffee Drop")
+                              ])
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
                     ],
                     1
                   )
-                ],
-                1
-              ),
+                : _vm._e(),
               _vm._v(" "),
-              _c(
-                "v-list-tile",
-                { on: { click: function($event) {} } },
-                [
-                  _c("v-list-tile-action", [_c("v-icon", [_vm._v("add")])], 1),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-tile-content",
+              _vm.status
+                ? _c(
+                    "v-list-tile",
+                    { on: { click: function($event) {} } },
                     [
                       _c(
-                        "v-list-tile-title",
+                        "v-list-tile-action",
+                        [_c("v-icon", [_vm._v("add")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-tile-content",
                         [
-                          _c("router-link", { attrs: { to: "/add" } }, [
-                            _vm._v("Add Coffe Drop")
-                          ])
+                          _c(
+                            "v-list-tile-title",
+                            [
+                              _c("router-link", { attrs: { to: "/add" } }, [
+                                _vm._v("Add Coffe Drop")
+                              ])
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
                     ],
                     1
                   )
-                ],
-                1
-              )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.status
+                ? _c(
+                    "v-list-tile",
+                    { on: { click: function($event) {} } },
+                    [
+                      _c(
+                        "v-list-tile-action",
+                        [_c("v-icon", [_vm._v("place")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-tile-content",
+                        [
+                          _c(
+                            "v-list-tile-title",
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", small: "" },
+                                  on: { click: _vm.Logout }
+                                },
+                                [_vm._v("Logout")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e()
             ],
             1
           )
@@ -3362,9 +3484,21 @@ var render = function() {
             "v-toolbar-items",
             { staticClass: "hidden-sm-and-down" },
             [
-              _c("v-btn", { attrs: { to: "/" } }, [_vm._v("Near Coffee Drop")]),
+              _vm.status
+                ? _c("v-btn", { attrs: { to: "/" } }, [
+                    _vm._v("Near Coffee Drop")
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("v-btn", { attrs: { to: "/add" } }, [_vm._v("Add Coffe Drop")])
+              _vm.status
+                ? _c("v-btn", { attrs: { to: "/add" } }, [
+                    _vm._v("Add Coffe Drop")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.status
+                ? _c("v-btn", { on: { click: _vm.Logout } }, [_vm._v("Exit")])
+                : _vm._e()
             ],
             1
           )
@@ -4206,10 +4340,17 @@ var render = function() {
                         [
                           _c("v-text-field", {
                             attrs: {
-                              "prepend-icon": "person",
-                              name: "login",
-                              label: "Login",
-                              type: "text"
+                              "prepend-icon": "email",
+                              name: "email",
+                              label: "Email",
+                              type: "email"
+                            },
+                            model: {
+                              value: _vm.user.email,
+                              callback: function($$v) {
+                                _vm.$set(_vm.user, "email", $$v)
+                              },
+                              expression: "user.email"
                             }
                           }),
                           _vm._v(" "),
@@ -4220,6 +4361,13 @@ var render = function() {
                               name: "password",
                               label: "Password",
                               type: "password"
+                            },
+                            model: {
+                              value: _vm.user.password,
+                              callback: function($$v) {
+                                _vm.$set(_vm.user, "password", $$v)
+                              },
+                              expression: "user.password"
                             }
                           })
                         ],
@@ -4234,11 +4382,54 @@ var render = function() {
                     [
                       _c("v-spacer"),
                       _vm._v(" "),
-                      _c("v-btn", { attrs: { color: "primary" } }, [
-                        _vm._v("Login")
-                      ])
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "primary" },
+                          on: { click: _vm.Login }
+                        },
+                        [_vm._v("Login")]
+                      )
                     ],
                     1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-snackbar",
+                {
+                  attrs: { timeout: _vm.timeout },
+                  model: {
+                    value: _vm.snackbar,
+                    callback: function($$v) {
+                      _vm.snackbar = $$v
+                    },
+                    expression: "snackbar"
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.text) +
+                      "\n                        "
+                  ),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red", flat: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.snackbar = false
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Close\n                        "
+                      )
+                    ]
                   )
                 ],
                 1
@@ -45099,19 +45290,22 @@ Vue.component('App', __webpack_require__(/*! ./components/App.vue */ "./resource
 
 var routes = [{
   path: '/',
-  component: _components_CoffeList_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
-}, {
-  path: '/login',
   component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
-  path: '/',
+  path: '/list',
+  component: _components_CoffeList_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+}, {
+  path: '/cp',
+  component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+}, {
+  path: '/form',
   component: _components_Form_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '/add',
   component: _components_Form_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '*',
-  CoffeList: _components_CoffeList_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  Login: _components_Login_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',

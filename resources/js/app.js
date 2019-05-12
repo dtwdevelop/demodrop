@@ -24,11 +24,12 @@ Vue.component('App', require('./components/App.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 const routes = [
-    { path: '/', component: CoffeList },
-    { path: '/login', component: Login },
-    { path: '/', component: Form },
+    { path: '/', component: Login },
+    { path: '/list', component: CoffeList },
+    { path: '/cp', component: Login },
+    { path: '/form', component: Form },
     { path: '/add', component: Form },
-    {path: '*' , CoffeList}
+    {path: '*' , Login}
 
 ]
 const router = new VueRouter({
